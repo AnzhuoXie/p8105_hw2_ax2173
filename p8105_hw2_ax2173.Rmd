@@ -24,19 +24,19 @@ mr_trash_df = read_excel("./Data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", s
   select(dumpster:homes_powered) %>% 
   drop_na() %>% 
   mutate(sports_balls = as.integer(round(sports_balls, 0)),
-         dumpster = as.double(dumpster))
+         dumpster = as.double(dumpster),
+         name = 'mr_trash_wheel')
 ```
 
 ```{r read and clean the Professor Trash Wheel}
 pro_trash_df = read_excel("./Data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", sheet = "Professor Trash Wheel", skip = 1) %>% 
   janitor::clean_names() %>% 
   drop_na() %>% 
-  mutate(sports_balls = as.integer(round(sports_balls, 0)))
+  mutate(sports_balls = as.integer(round(sports_balls, 0)),
+         name = "professor_trash_wheel")
 ```
 
-```{r add an additional variable to both datasets and combine them}
-mutate(mr_trash_df, trash_name = 'mr_trash_wheel')
-mutate(pro_trash_df, trash_name = "professor_trash_wheel")
+```{r combine these two dataset}
 trash_df = bind_rows(mr_trash_df, pro_trash_df)
 ```
 
