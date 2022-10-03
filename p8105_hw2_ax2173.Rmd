@@ -11,10 +11,12 @@ library(haven)
 
 ## Problem 1
 
-```{r}
+```{r read and clean the data}
 subway_df = 
   read.csv("./Data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
-  janitor::clean_names()
+  janitor::clean_names() %>% 
+  select(line, station_name, station_latitude, station_longitude, starts_with('route'), entry, vending, entrance_type, ada) %>% 
+  mutate(entry, recode(entry, "YES" = TRUE, 'NO' = FALSE))
 ```
 
 ## Problem 2
@@ -82,4 +84,7 @@ unemployment_df = unemployment_df %>%
   )
 ```
 
+```{r merge these dataframes for P3}
+
+```
 
