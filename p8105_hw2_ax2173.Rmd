@@ -5,6 +5,7 @@ output: github_document
 
 ```{r setup}
 library(tidyverse)
+library(readxl)
 ```
 
 ## Problem 1
@@ -13,5 +14,14 @@ library(tidyverse)
 subway_df = 
   read.csv("./Data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
   janitor::clean_names()
+```
+
+## Problem 2
+
+```{r}
+trash_wheel_df = read_excel("./Data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx") %>% 
+  janitor::clean_names() %>% 
+  select(dumpster:homes_powered) %>% 
+  drop_na()
 ```
 
