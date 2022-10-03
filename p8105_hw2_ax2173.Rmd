@@ -1,0 +1,8 @@
+---
+title: "p8015_hw2_ax2173"
+output: github_document
+---
+
+```{r setup}
+library(tidyverse)
+```
