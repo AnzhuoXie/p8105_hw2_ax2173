@@ -86,7 +86,7 @@ According the above code truck, we can get that there are `r nrow(serve_a)` dist
 
 ```{r read and clean the Mr. Trash Wheel sheet for P2}
 mr_trash_df = 
-  read_excel("./Data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", skip = 1) %>% 
+  read_excel("./Data/Trash Wheel Collection Data.xlsx", skip = 1) %>% 
   janitor::clean_names() %>% 
   select(dumpster:homes_powered) %>% 
   drop_na() %>% 
@@ -101,6 +101,7 @@ pro_trash_df =
   janitor::clean_names() %>% 
   drop_na() %>% 
   mutate(sports_balls = as.integer(round(sports_balls, 0)),
+         year = as.character(year),
          name = "professor_trash_wheel")
 ```
 
