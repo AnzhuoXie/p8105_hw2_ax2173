@@ -24,6 +24,9 @@ subway_df =
   * So far, I input the data, select some columns from the original dataset and convert the entry variable from character to a logical variable.
   * This dataset is a `r nrow(subway_df)` x `r ncol(subway_df)` dataset.
 
+* These are the answers for the questions:
+
+
 ## Problem 2
 
 ```{r read and clean the Mr. Trash Wheel sheet for P2}
@@ -86,10 +89,20 @@ unemployment_df = unemployment_df %>%
     Jan : Dec,
     names_to = 'month',
     values_to = 'unemployment'
-  )
+  ) %>% 
+  janitor::clean_names() %>% 
+  mutate(year = as.character(year))
 ```
 
 ```{r merge these dataframes for P3}
-
+first_merge_df = left_join(pols_month_df, snp_df, by = c('year', 'month'))
+resulting_df = left_join(first_merge_df, unemployment_df, by = c('year', 'month'))
 ```
+
+* There are some descriptions regarding these data:
+  * The pols_month dataset contains these variables: `r colnames(pols_month_df)`
+  * The snp dataset contains these variables: `r colnames(snp_df)`
+  * The unployment dataset contains these variables: `r colnames(unemployment_df)`
+  * The resulting dataset is `r nrow(resulting_df)` x `r ncol(resulting_df)`, the range of years is `r range(resulting_df$year)`, and the final resulting dataset contains these variables: `r colnames(resulting_df)`
+
 
