@@ -15,6 +15,7 @@ library(haven)
 subway_df = 
   read.csv("./Data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
   janitor::clean_names() %>% 
+  mutate(route8 = as.character(route8), route9 = as.character(route9), route10 = as.character(route10), route11 = as.character(route11)) %>% 
   select(line, station_name, station_latitude, station_longitude, starts_with('route'), entry, vending, entrance_type, ada) %>% 
   mutate(entry = recode(entry, "YES" = TRUE, 'NO' = FALSE))
 ```
@@ -24,13 +25,68 @@ subway_df =
   * So far, I input the data, select some columns from the original dataset and convert the entry variable from character to a logical variable.
   * This dataset is a `r nrow(subway_df)` x `r ncol(subway_df)` dataset.
 
-* These are the answers for the questions:
+```{r calculate how many distinct stations}
+station = 
+  subway_df %>% 
+  select(station_name, line) %>% 
+  distinct
+```
 
+According the above code truck, we can get that there are `r nrow(station)` distinct stations.
+
+```{r}
+ada_count = 
+  subway_df %>% 
+  filter(ada == TRUE) %>% 
+  select(station_name, line) %>% 
+  distinct
+```
+
+According the above code truck, we can get that there are `r nrow(ada_count)` stations are ADA compliant.
+
+```{r}
+enty_without_vending = 
+  subway_df %>% 
+  filter(vending == "NO") %>% 
+  pull(entry) %>% 
+  mean
+```
+
+According the above code truck, we can get that there are `r nrow(enty_without_vending)` stations are ADA compliant.
+
+```{r}
+serve_a = 
+  subway_df %>% 
+  pivot_longer(
+    route1:route11,
+    names_to = "route_number",
+    names_prefix = 'route',
+    values_to = 'route'
+  ) %>% 
+  filter(route == 'A') %>% 
+  select(station_name, line) %>% 
+  distinct
+
+serve_a_ada = 
+    subway_df %>% 
+  pivot_longer(
+    route1:route11,
+    names_to = 'route_number',
+    names_prefix = 'route',
+    values_to = 'route'
+  ) %>% 
+  filter(route == 'A', ada == TRUE) %>% 
+  select(station_name, line) %>% 
+  distinct
+```
+
+According the above code truck, we can get that there are `r nrow(serve_a)` distinct stations serve the A train, and of the stations that serve the A train, `r nrow(serve_a_ada)` are ADA compliant.
 
 ## Problem 2
 
 ```{r read and clean the Mr. Trash Wheel sheet for P2}
-mr_trash_df = read_excel("./Data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", skip = 1) %>% 
+mr_trash_df = 
+  read_excel("./Data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", skip = 1) %>% 
   janitor::clean_names() %>% 
   select(dumpster:homes_powered) %>% 
   drop_na() %>% 
@@ -40,7 +96,8 @@ mr_trash_df = read_excel("./Data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", s
 ```
 
 ```{r read and clean the Professor Trash Wheel for P2}
-pro_trash_df = read_excel("./Data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", sheet = "Professor Trash Wheel", skip = 1) %>% 
+pro_trash_df = 
+  read_excel("./Data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", sheet = "Professor Trash Wheel", skip = 1) %>% 
   janitor::clean_names() %>% 
   drop_na() %>% 
   mutate(sports_balls = as.integer(round(sports_balls, 0)),
@@ -66,7 +123,8 @@ snp_df = read_csv("./Data/fivethirtyeight_datasets/snp.csv")
 ```
 
 ```{r data clean for pols_month_df for P3}
-pols_month_df = pols_month_df %>% 
+pols_month_df = 
+  pols_month_df %>% 
   separate(mon, into = c('year','month','day'), sep = '-') %>% 
   mutate(month = recode(month, '01' = 'Jan', '02' = 'Feb', '03' = 'Mar', '04' = 'Apr', '05' = 'May', '06' = 'Jun', '07' = 'Jul', '08' = 'Aug', '09' = 'Sep', '10' = 'Oct', '11' = 'Nov', '12' = 'Dec'),
          president = prez_gop + gov_gop + sen_gop + rep_gop + prez_dem + gov_dem + sen_dem + rep_dem
@@ -84,7 +142,8 @@ snp_df = snp_df %>%
 ```
 
 ```{r data clean for unemployment_df for P3}
-unemployment_df = unemployment_df %>% 
+unemployment_df = 
+  unemployment_df %>% 
   pivot_longer(
     Jan : Dec,
     names_to = 'month',
