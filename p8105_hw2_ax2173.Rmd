@@ -127,10 +127,14 @@ snp_df = read_csv("./Data/fivethirtyeight_datasets/snp.csv")
 pols_month_df = 
   pols_month_df %>% 
   separate(mon, into = c('year','month','day'), sep = '-') %>% 
-  mutate(month = recode(month, '01' = 'Jan', '02' = 'Feb', '03' = 'Mar', '04' = 'Apr', '05' = 'May', '06' = 'Jun', '07' = 'Jul', '08' = 'Aug', '09' = 'Sep', '10' = 'Oct', '11' = 'Nov', '12' = 'Dec'),
-         president = prez_gop + gov_gop + sen_gop + rep_gop + prez_dem + gov_dem + sen_dem + rep_dem
-         ) %>% 
-  select(-prez_dem, -prez_gop, -day)
+  mutate(month = recode(month, '01' = 'Jan', '02' = 'Feb', '03' = 'Mar', '04' = 'Apr', '05' = 'May', '06' = 'Jun', '07' = 'Jul', '08' = 'Aug', '09' = 'Sep', '10' = 'Oct', '11' = 'Nov', '12' = 'Dec')) %>% 
+  pivot_longer(
+    prez_gop:rep_dem,
+    names_to = 'president',
+    values_to = 'number'
+  ) %>% 
+  filter(president != 'prez_dem' & president != 'prez_gop') %>% 
+  select(-day)
 ```
 
 ```{r data clean for snp_df for P3}
