@@ -97,10 +97,10 @@ mr_trash_df =
 
 ```{r read and clean the Professor Trash Wheel for P2}
 pro_trash_df = 
-  read_excel("./Data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", sheet = "Professor Trash Wheel", skip = 1) %>% 
+  read_excel("./Data/Trash Wheel Collection Data.xlsx", sheet = "Professor Trash Wheel", skip = 1) %>% 
   janitor::clean_names() %>% 
   drop_na() %>% 
-  mutate(sports_balls = as.integer(round(sports_balls, 0)),
+  mutate(
          year = as.character(year),
          name = "professor_trash_wheel")
 ```
