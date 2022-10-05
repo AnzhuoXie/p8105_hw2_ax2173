@@ -52,7 +52,7 @@ enty_without_vending =
   mean
 ```
 
-According the above code truck, we can get that there are `r nrow(enty_without_vending)` stations are ADA compliant.
+According the above code truck, we can get that there are `r enty_without_vending` stations are ADA compliant.
 
 ```{r}
 serve_a = 
